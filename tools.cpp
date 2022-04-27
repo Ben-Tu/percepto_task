@@ -1,11 +1,19 @@
 
 #include "tools.h"
 
+#define SETSIZE 4
 
-int tools::convert_hex_string_to_int(std::string const& s){
+int tools::convert_hex_string_to_int(std::string const& hex_string){
 
-	const char* c = s.c_str();
+	const char* c = hex_string.c_str();
 	return (int)strtol(c, NULL, 0);
+
+}
+
+std::string tools::create_result_msg(std::string const& input_string,std::string const& converter_string){
+	std::string res;
+	res = input_string +"_"+ converter_string;
+	return res;
 
 }
 
@@ -34,87 +42,100 @@ std::string tools::convert_hex_to_bin(std::string const& hex_string){
 	        case 'F': bin += "1111"; break;
 	        default:
 	            printf("invalid character %c\n", hex_str[i]);
-	            bin += "0000";
-	            break;
+	            return "";
 	        }
 	    }
 
 	 return bin;
 }
+std::string tools::convert_bin_to_hex(std::string const& bin_string){
+	std::string bin("00001110101111011000000101111000");
+    int result =0 ;
 
-std::string tools::binary_flip(std::string const& bin_string){
+    for(size_t count = 0; count < bin_string.length() ; ++count)
+    {
+        result *=2;
+        result += bin_string[count]=='1'? 1 :0;
+    }
 
-	int max_bin_one = 0;
-	int max_bin_zero = 0;
-	int i, j;
-	std::string odd_bits_flip = "";
-	std::string even_bits_flip = "";
+    std::stringstream ss;
+    ss << "0x" << std::hex << std::setw(8) << std::setfill('0')  << result;
 
-	std::cout << bin_string << std::endl;
+    std::string hexVal(ss.str());
+    return hexVal;
+//    std::string hexVal(ss.str());
+//    std::cout << hexVal << std::endl;
+
+}
+
+char tools::binary_flip_handle(const char& bit){
+	if (bit == '0')
+		return '1';
+	return '0';
+}
+
+std::string tools::binary_flip_by_significant_bit(std::string const& bin_string){
+
+	int i;
+	std::string res_bin_flip_str = "";
+
+	bool is_most_significant_bit;
+
+	if (bin_string[0] == '1'){
+		is_most_significant_bit = true;
+	}else{ // bin_string[0] == 0
+		is_most_significant_bit = false;
+	}
+
 	for(i = 0; i != bin_string.size(); ++i){
 		char c = bin_string[i];
 
-		if (c == '1'){
-			max_bin_one += 1;
+		if (is_most_significant_bit){
 			if (i % 2 == 0){
-				even_bits_flip += "0";
-				odd_bits_flip += "1";
-			}else{
-				even_bits_flip += "1";
-				odd_bits_flip += "0";
-			}
-		}
-		if (c == '0'){
-			max_bin_zero += 1;
-			if (i % 2 == 0){
-				even_bits_flip += "1";
-				odd_bits_flip += "0";
-			}else{
-				even_bits_flip += "0";
-				odd_bits_flip += "1";
-			}
-		}
+				res_bin_flip_str += binary_flip_handle(c);
 
+			}else{
+				res_bin_flip_str += c;
+			}
+
+		}else{
+			if (i % 2 == 0){
+				res_bin_flip_str += c;
+			}else{
+				res_bin_flip_str += binary_flip_handle(c);
+			}
+		}
 	}
 
-	if (max_bin_one > max_bin_zero)
-		return odd_bits_flip;
-	return even_bits_flip;
+	return res_bin_flip_str;
 
-//	std::string bin_str(bin_string);
-////	std::string odd_bits_flip_str = odd_bits_flip.str();
-////	std::string even_bits_flip_str = even_bits_flip.str();
-//
-//	std::cout << "odd_bits_flip_str "<<odd_bits_flip << std::endl;
-//	std::cout << "even_bits_flip_str "<<even_bits_flip << std::endl;
-//
-//	std::cout << "max_bin_one "<< max_bin_one << std::endl;
-//	std::cout << "max_bin_zero "<< max_bin_zero << std::endl;
-//
-//	std::cout << bin_string << std::endl;
-//	bin_string.copy(bin_str,sizeof bin_string);
-//	return (bin_str );
 }
 
 
-bool tools::is_hex_notation(std::string const& s)
+bool tools::is_hex_notation(std::string const& hex_string)
 {
-  return s.compare(0, 2, "0x") == 0
-      && s.size() > 2
-	  && s.size() == 10
-      && s.find_first_not_of("0123456789abcdefABCDEF", 2) == std::string::npos;
+  if( hex_string.compare(0, 2, "0x") == 0
+      && hex_string.size() > 2
+	  && hex_string.size() == 10
+      && hex_string.find_first_not_of("0123456789abcdefABCDEF", 2) == std::string::npos){
+	  return 1;
+  }
+  std::cout << "Error input: The hex number invalid!" << std::endl;
+  return 0;
 }
 
-bool tools::is_four_byte_number(std::string const& s){
-	int number = convert_hex_string_to_int(s);
+bool tools::is_4byte_number(std::string const& hex_string){
+	int number = convert_hex_string_to_int(hex_string);
 	if (sizeof(number) == 4)
 		return 1;
+	std::cout << "Error input: The hex number are not 4-Byte type!" << std::endl;
 	return 0;
 }
 
-bool tools::run_all_validation_functions(std::string const& s){
-	if (is_hex_notation(s) && is_four_byte_number(s))
+bool tools::run_validation_functions(std::string const& hex_string){
+	if (is_hex_notation(hex_string) && is_4byte_number(hex_string))
 		return 1;
+	return 0;
 }
 
 tools::~tools() {}

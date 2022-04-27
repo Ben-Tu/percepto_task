@@ -143,6 +143,7 @@ bool tools::is_hex_notation(std::string const& hex_string)
 {
   if( hex_string.compare(0, 2, "0x") == 0 // check if the hex start with '0x'
       && hex_string.size() > 2
+	  && hex_string.size() <= 10
       && hex_string.find_first_not_of("0123456789abcdefABCDEF", 2) == std::string::npos){
 	  return 1;
   }
@@ -155,12 +156,6 @@ bool tools::is_4byte_number(std::string const& hex_string){
 	if (sizeof(number) == FOUR_BYTE_TYPE) //check if the number is 4 bytes
 		return 1;
 	std::cout << "Error input: The hex number are not 4-Byte type!" << std::endl;
-	return 0;
-}
-
-bool tools::run_validation_functions(std::string const& hex_string){
-	if (is_hex_notation(hex_string) && is_4byte_number(hex_string))
-		return 1;
 	return 0;
 }
 

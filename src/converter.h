@@ -4,9 +4,14 @@
 
 class converter{
 
-	tools* t;
+	tools t;
 
 public:
+
+	//run_validation_functions:
+	//The function call to is_hex_notation and is_4byte_number functions.
+	bool run_validation_functions(std::string const& hex_string);
+
 	/*
 	hex_converter:
 	The function get hex string e.g: '0xa4172bd2' and return hex string that manipulated by the following conditions:

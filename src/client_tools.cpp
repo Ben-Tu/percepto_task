@@ -16,7 +16,7 @@ void action_listener::on_success(const mqtt::token& tok){
 		std::cout << " for token: [" << tok.get_message_id() << "]" << std::endl;
 	auto top = tok.get_topics();
 	if (top && !top->empty())
-		std::cout << "\ttoken topic: '" << (*top)[0] << "', ..." << std::endl;
+		std::cout << "\ttoken topic: '" << (*top)[0] << std::endl;
 	std::cout << std::endl;
 }
 

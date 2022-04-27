@@ -56,10 +56,6 @@ public:
 	// The function check if the hex number is 4 byte number.
 	bool is_4byte_number(std::string const& hex_string);
 
-	//run_validation_functions:
-	//The function call to is_hex_notation and is_4byte_number functions.
-	bool run_validation_functions(std::string const& hex_string);
-
 	virtual ~tools();
 
 };

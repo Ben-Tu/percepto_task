@@ -19,6 +19,12 @@ const std::string USERNAME("client1");
 int main(int argc, char* argv[])
 {
 
+//	converter* c;
+//	std::cout << c->hex_converter("0xa4172bd2") << std::endl;
+//	std::cout << c->hex_converter("0x33c53bd1") << std::endl;
+//	std::cout << c->hex_converter("0xf0ab22A2") << std::endl;
+//	c = NULL;
+
 	std::string password;
 	std::string client_id;
 
@@ -27,12 +33,6 @@ int main(int argc, char* argv[])
 
 	std::cout << "Please enter your hostname without space: ";
 	std::cin >> client_id;
-
-	converter* c;
-	std::cout << c->hex_converter("0xa4172bd2") << std::endl;
-	std::cout << c->hex_converter("0x33c51bd1") << std::endl;
-	std::cout << c->hex_converter("0xf0ab22A2") << std::endl;
-	c = NULL;
 
 
 	mqtt::async_client cli(SERVER_ADDRESS, client_id);

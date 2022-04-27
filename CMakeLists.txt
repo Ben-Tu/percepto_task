@@ -20,9 +20,16 @@ add_executable( ${TARGET}
         main.cpp
         tools.cpp
         converter.cpp
+        client_tools.cpp
         )
 
 set_property( TARGET ${TARGET} PROPERTY CXX_STANDARD 17 )
 target_link_libraries( ${TARGET} paho-mqttpp3 paho-mqtt3as pthread)
 target_link_libraries( ${TARGET} PRIVATE ${PAHO_BUILD_SHARED} )
 target_link_libraries(${TARGET} PRIVATE ${PAHO_CPP_LIB})
+
+
+option( WITH_DEBUG_PRINT "Print debug" OFF )
+if (WITH_DEBUG_PRINT)
+    add_definitions( -DWITH_DEBUG_PRINT=true )
+endif ()

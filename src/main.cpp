@@ -17,7 +17,7 @@ const std::string USERNAME("client1");
 int main(int argc, char* argv[])
 {
 
-	std::cout <<"\nWhen the client runing,for quit press 'q' and press enter." <<'\n'<< std::endl;
+	std::cout <<"\nWhen the client runing,for quit press Q<Enter> to quit" <<'\n'<< std::endl;
 
 	std::string password;
 	std::string client_id;

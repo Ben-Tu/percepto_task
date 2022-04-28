@@ -46,11 +46,20 @@ void callback::on_success(const mqtt::token& tok) {}
 
 void callback::connected(const std::string& cause) {
 	std::cout << "\nConnection success" << std::endl;
+
+	std::cout << "\nPress Q<Enter> to quit\n" << std::endl;
+
+	try{
+		cli_.publish(TOPIC_PUB,clientId_);
+		std::cout <<"Publish hostname '"<< clientId_ << "' to topic " << TOPIC_PUB <<'\n'<< std::endl;
+	}catch (const mqtt::exception& exc) {
+		std::cerr << exc << std::endl;
+	}
+
 	std::cout << "\nSubscribing to topic '" << TOPIC_INPUT_DATA << "'\n"
 		<< "\tfor client " << clientId_
-		<< " using QoS" << QOS << "\n"
-		<< "\nPress Q<Enter> to quit\n" << std::endl;
-	cli_.publish(TOPIC_PUB,clientId_);
+		<< " using QoS" << QOS << "\n" << std::endl;
+
 	cli_.subscribe(TOPIC_INPUT_DATA, QOS, nullptr, subListener_);
 }
 
@@ -76,7 +85,12 @@ void callback::message_handling(mqtt::const_message_ptr msg,callback *cb){
 		}
 		return_msg = cb->t->create_result_msg(msg->to_string(),converter_result);
 		std::cout <<"Return message -> "<< return_msg <<'\n'<< std::endl;
-		cb->cli_.publish(TOPIC_OUTPUT_DATA,return_msg);
+		try{
+			cb->cli_.publish(TOPIC_OUTPUT_DATA,return_msg);
+		}catch (const mqtt::exception& exc) {
+			std::cerr << exc << std::endl;
+		}
+
 	}
 	//handle on other topics...
 

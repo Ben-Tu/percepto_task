@@ -15,8 +15,6 @@ std::cout << "DEBUG(convert_hex_string_to_int)-> Input intger: " << (int)strtol(
 #endif
 
 	return (int)strtol(c, NULL, 0); // convert to integer
-
-
 }
 
 std::string tools::create_result_msg(std::string const& input_string,std::string const& converter_string){
@@ -89,9 +87,7 @@ std::cout << "DEBUG(convert_bin_to_hex)-> Output hex string: " << hexVal <<std::
 }
 
 char tools::binary_flip_handle(const char& bit){
-	if (bit == '0')
-		return '1';
-	return '0';
+	return bit == '0' ? '1' :'0';
 }
 
 std::string tools::binary_flip_by_significant_bit(std::string const& bin_string){

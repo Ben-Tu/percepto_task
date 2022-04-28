@@ -12,18 +12,10 @@
 #include "client_tools.h"
 
 const std::string SERVER_ADDRESS("3.126.83.231:1883");
-//const std::string CLIENT_ID("Ben_Tubul");
 const std::string USERNAME("client1");
-//const std::string PASSWORD("0G*XXzzZu_ICwqBf~BQWkwsl");
 
 int main(int argc, char* argv[])
 {
-
-//	converter* c;
-//	std::cout << c->hex_converter("0xa4172bd2") << std::endl;
-//	std::cout << c->hex_converter("0x33c53bd1") << std::endl;
-//	std::cout << c->hex_converter("0xf0ab22A2") << std::endl;
-//	c = NULL;
 
 	std::string password;
 	std::string client_id;

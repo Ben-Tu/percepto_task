@@ -64,24 +64,30 @@ void callback::connection_lost(const std::string& cause) {
 	reconnect();
 }
 
-void callback::message_handling(mqtt::const_message_ptr msg){
+void callback::message_handling(mqtt::const_message_ptr msg,callback *cb){
+
 	std::string converter_result;
 	std::string return_msg;
-	converter_result = conve_->hex_converter(msg->to_string());
-	if(converter_result.size() == 0){
-		return;
+
+	if (msg->get_topic().compare(TOPIC_INPUT_DATA) == 0){
+		converter_result = cb->conve_->hex_converter(msg->to_string());
+		if(converter_result.size() == 0){
+			return;
+		}
+		return_msg = cb->t->create_result_msg(msg->to_string(),converter_result);
+		std::cout <<"Return message -> "<< return_msg <<'\n'<< std::endl;
+		cb->cli_.publish(TOPIC_OUTPUT_DATA,return_msg);
 	}
-	return_msg = t->create_result_msg(msg->to_string(),converter_result);
-	std::cout <<"Return msg -> "<< return_msg <<'\n'<< std::endl;
-	cli_.publish(TOPIC_OUTPUT_DATA,return_msg);
+	//handle on other topics...
+
 }
 
 void callback::message_arrived(mqtt::const_message_ptr msg) {
 	std::cout << "Message arrived" << std::endl;
 	std::cout << "\ttopic: '" << msg->get_topic() << "'" << std::endl;
 	std::cout << "\tpayload: '" << msg->to_string() << "'\n" << std::endl;
-	message_handling(msg);
-
+	std::thread worker(&callback::message_handling, msg,this); // send to async function
+	worker.detach();
 }
 
 void callback::delivery_complete(mqtt::delivery_token_ptr token) {}

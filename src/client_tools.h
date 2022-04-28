@@ -5,6 +5,8 @@
 #include <cstring>
 #include <cctype>
 #include <chrono>
+#include <thread>
+#include <future>
 #include "mqtt/client.h"
 #include "mqtt/async_client.h"
 #include "converter.h"
@@ -84,7 +86,7 @@ public:
 	// This will initiate the attempt to manually reconnect.
 	void connection_lost(const std::string& cause) override;
 
-	void message_handling(mqtt::const_message_ptr msg);
+	static void message_handling(mqtt::const_message_ptr msg,callback *cb);
 
 	// Callback for when a message arrives.
 	void message_arrived(mqtt::const_message_ptr msg) override;
